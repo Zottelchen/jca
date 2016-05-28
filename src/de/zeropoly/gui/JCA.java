@@ -38,8 +38,9 @@ public class JCA {
 	 */
 	private void initialize() {
 		mainFrame = new JFrame();
+		mainFrame.setResizable(false);
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(JCA.class.getResource("/de/zeropoly/res/spyglass.png")));
-		mainFrame.setBounds(100, 100, 450, 300);
+		mainFrame.setBounds(100, 100, 450, 600);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 	}
