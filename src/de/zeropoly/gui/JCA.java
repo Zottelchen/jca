@@ -1,6 +1,7 @@
 package de.zeropoly.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -19,10 +20,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+
 
 import net.miginfocom.swing.MigLayout;
 
@@ -70,6 +75,8 @@ public class JCA {
 		MigLayout layout = new MigLayout("wrap 3", "[49.00][303.00][]", "[][][][][][]");
 		mainFrame.getContentPane().setLayout(layout);
 
+		//final ColoringCellRenderer cellRenderer = new ColoringCellRenderer();
+
 		JLabel lbl_filepath = new JLabel("Path:");
 		mainFrame.getContentPane().add(lbl_filepath, "cell 0 0,alignx center,growy");
 
@@ -88,11 +95,28 @@ public class JCA {
 					return String.class;
 				}
 			}
-			
-			
+
+
 		};
-		String[] headers = {"Color (RGB)", "Color (Hex)", "Pixelcount", "Example"};
+		String[] headers = {"Color (RGB)", "Color (Hex)", "Pixelcount"};
 		tblm.setColumnIdentifiers(headers);
+		table = new JTable(tblm){
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (!isRowSelected(row))
+				{
+					c.setBackground(getBackground());
+					int modelRow = convertRowIndexToModel(row);
+					Color color = Color.decode((String) getModel().getValueAt(modelRow, 1));
+					c.setBackground(color);
+				}
+				
+				
+				return c;
+			}
+		};
+		//table.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
+		table.setColumnSelectionAllowed(false);
 
 		JButton btn_choosefilepath = new JButton("Choose ...");
 		btn_choosefilepath.addActionListener(new ActionListener() {
@@ -157,28 +181,27 @@ public class JCA {
 					}
 				}
 
-				
-				
+
+
 				for (Color color: map.keySet()){
-					Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getBlue(), color.getGreen()), map.get(color).intValue(), ""};
+					Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getBlue(), color.getGreen()), map.get(color).intValue()};
 					tblm.addRow(row);
+					//cellRenderer.setCellColor(tblm.getRowCount(), 3, color);
 				}
-				
+
 
 				table.setAutoCreateRowSorter(true);
 			}
 		});
 		mainFrame.getContentPane().add(btn_analyze, "cell 1 1,alignx center");
-		
+
 		JLabel lbl_sorthint = new JLabel("Columns can be sorted by clicking on their headers AFTER ANALYZING.");
 		mainFrame.getContentPane().add(lbl_sorthint, "cell 0 3 3 1,alignx center");
 
 		JScrollPane scrollPane = new JScrollPane();
 		mainFrame.getContentPane().add(scrollPane, "cell 0 4 3 1,alignx center");
 
-		table = new JTable(tblm);
-		
-		table.setColumnSelectionAllowed(false);
+
 		scrollPane.setViewportView(table);
 	}
 
