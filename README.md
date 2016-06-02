@@ -7,4 +7,4 @@ A simple tool which lets you select an image and lets you analyze that image. It
 - how often the Color has been used (Pixelcount)
 - a color preview
 
-![Screenshot][/screenshot.png]
+![Screenshot](/screenshot.png)
