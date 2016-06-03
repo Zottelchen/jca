@@ -157,6 +157,7 @@ public class JCA {
 					return;
 				}
 				BufferedImage image;
+				
 				try {
 					image = ImageIO.read(file);
 				} catch (IOException e) {
@@ -181,7 +182,7 @@ public class JCA {
 
 
 				for (Color color: map.keySet()){
-					Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getBlue(), color.getGreen()), map.get(color).intValue()};
+					Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue() ), map.get(color).intValue()};
 					tblm.addRow(row);
 					//cellRenderer.setCellColor(tblm.getRowCount(), 3, color);
 				}
