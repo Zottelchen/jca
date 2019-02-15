@@ -150,7 +150,16 @@ public class JCA {
                 return;
             }
 
-            fillTable(map, top5only.isSelected());
+            if (top5only.isSelected()) {
+                map =
+                        map.entrySet().stream()
+                                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                                .limit(5)
+                                .collect(Collectors.toMap(
+                                        Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            }
+
+            fillTable(map);
 
 
             table.setAutoCreateRowSorter(true);
@@ -169,15 +178,8 @@ public class JCA {
         scrollPane.setViewportView(table);
     }
 
-    private void fillTable(HashMap<Color, Integer> map, boolean top5) {
-        if (top5) {
-            map =
-                    map.entrySet().stream()
-                            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                            .limit(5)
-                            .collect(Collectors.toMap(
-                                    Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-        }
+    private void fillTable(HashMap<Color, Integer> map) {
+
         for (Color color : map.keySet()) {
             Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue()), map.get(color)};
             tblm.addRow(row);
