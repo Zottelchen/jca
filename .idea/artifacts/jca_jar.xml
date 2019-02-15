@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jca:jar">
+    <output-path>$PROJECT_DIR$/bin/artifacts/jca_jar</output-path>
+    <root id="archive" name="jca.jar">
+      <element id="module-output" name="jca" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/miglayout-swing-5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/miglayout-core-5.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
