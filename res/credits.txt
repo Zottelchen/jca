@@ -1,0 +1,2 @@
+spyglass.png: Icon made by Lorc. Available on http://game-icons.net
+MiGLayout: http://www.miglayout.com/

@@ -9,7 +9,7 @@ A simple tool which lets you select an image and lets you analyze that image. It
 
 ![Screenshot](/screenshot.png)
 
-##Credits
+## Credits
 
 - spyglass.png: Icon made by Lorc. Available on http://game-icons.net
 - MiGLayout: http://www.miglayout.com/
