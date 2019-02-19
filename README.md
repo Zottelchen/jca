@@ -13,3 +13,4 @@ A simple tool which lets you select an image and lets you analyze that image. It
 
 - spyglass.png: Icon made by Lorc. Available on http://game-icons.net
 - MiGLayout: http://www.miglayout.com/
+- HSLColor class: https://tips4java.wordpress.com/2009/07/05/hsl-color/

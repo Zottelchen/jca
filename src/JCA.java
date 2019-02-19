@@ -36,6 +36,7 @@ public class JCA {
 
     };
     private JCheckBox top5only;
+    private JCheckBox complementary;
 
     /**
      * Launch the application.
@@ -66,7 +67,7 @@ public class JCA {
         mainFrame.setTitle("Java Color Analyzer");
         mainFrame.setResizable(false);
         mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(JCA.class.getResource("/spyglass.png")));
-        mainFrame.setBounds(100, 100, 450, 500);
+        mainFrame.setBounds(100, 100, 600, 600);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         MigLayout layout = new MigLayout("wrap 3", "[49.00][303.00][]", "[][][][][][]");
         mainFrame.getContentPane().setLayout(layout);
@@ -83,9 +84,11 @@ public class JCA {
 
         top5only = new JCheckBox("Show only Top5 values");
         mainFrame.getContentPane().add(top5only, "cell 1 1,alignx center");
+        complementary = new JCheckBox("Show complementary colors");
+        mainFrame.getContentPane().add(complementary, "cell 1 2,alignx center");
 
 
-        String[] headers = {"Color (RGB)", "Color (Hex)", "Pixelcount"};
+        String[] headers = {"Color (RGB)", "Color (Hex)", "Pixelcount", "Complementary (RGB)", "Complementary (Hex)"};
         tblm.setColumnIdentifiers(headers);
         table = new JTable(tblm) {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -159,7 +162,8 @@ public class JCA {
                                         Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
             }
 
-            fillTable(map);
+
+            fillTable(map, complementary.isSelected());
 
 
             table.setAutoCreateRowSorter(true);
@@ -178,12 +182,21 @@ public class JCA {
         scrollPane.setViewportView(table);
     }
 
-    private void fillTable(HashMap<Color, Integer> map) {
-
-        for (Color color : map.keySet()) {
-            Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue()), map.get(color)};
-            tblm.addRow(row);
-            //cellRenderer.setCellColor(tblm.getRowCount(), 3, color);
+    private void fillTable(HashMap<Color, Integer> map, boolean calc_complementary) {
+        if (calc_complementary) {
+            for (Color color : map.keySet()) {
+                HSLColor compl = new HSLColor(color);
+                Color complementary = compl.getComplementary();
+                Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue()), map.get(color), complementary.getRed() + " - " + complementary.getGreen() + " - " + complementary.getBlue(), String.format("#%02X%02X%02X", complementary.getRed(), complementary.getGreen(), complementary.getBlue())};
+                tblm.addRow(row);
+                //cellRenderer.setCellColor(tblm.getRowCount(), 3, color);
+            }
+        } else {
+            for (Color color : map.keySet()) {
+                Object[] row = {color.getRed() + " - " + color.getGreen() + " - " + color.getBlue(), String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue()), map.get(color), "0", "0"};
+                tblm.addRow(row);
+                //cellRenderer.setCellColor(tblm.getRowCount(), 3, color);
+            }
         }
     }
 
